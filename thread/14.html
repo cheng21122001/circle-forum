@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <span>Circle BBS · bbs.circle-talk.net · 建站于2003年</span>
+  <span>Circle BBS · bbs.circle-talk.net · 建站于2020年</span>
   <span class="dots"><span></span><span></span><span></span></span>
 </div>
 <div class="page">
@@ -41,7 +41,7 @@
     <div class="post-card op">
       <div class="post-head">
         <span><span class="floor-badge">1楼 · 楼主</span><span class="post-author">还是搬走比较好</span></span>
-        <span>2022-11-30 05:12</span>
+        <span>2024-01-30 05:12</span>
       </div>
       <div class="post-body">
         <p>我跟隔壁那户人家共用一面承重墙，隔音一向不算好，平日里能隐约听见电视声、说话声，从没觉得有什么异常，直到上个月那天夜里，我被一阵极轻、极规律的声响吵醒，起初以为是隔壁在挪家具，那声音一下一下的，间隔均匀得像是节拍器，我翻了个身想继续睡，却在迷糊之间听见那声音里混进了一点别的东西——一种极细微的、类似骨节被人从很深的地方缓慢顶开的闷响，一下比一下更靠近皮肤表层，却始终没有变成我熟悉的任何一种生活噪音。</p>
@@ -56,12 +56,39 @@
     </div>
     
       
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">6楼</span>回复 还是搬走比较好：</span>
+      </div>
+      <div class="post-body">
+        <p>"终于轮到自己、早有预料的释然"这个描述我看了浑身发冷，一般人受到伤害的反应不该是这样的，倒像是她心里其实一直都清楚这一天迟早会来，甚至在某种程度上，已经提前做好了迎接的准备。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">11楼</span>回复6楼：</span>
+      </div>
+      <div class="post-body">
+        <p>警察那句"是不是听错了隔壁装修的声音"我信，不是他们敷衍，是这类案子的死状本身就超出常规刑侦能解释的范围，遇到解释不了的东西，例行公事走流程反而是他们唯一能做的事，你不能指望体制内的人承认自己遇到了没有先例的东西。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">18楼</span>回复：</span>
+      </div>
+      <div class="post-body">
+        <p>"我以为我已经还清了"这句遗言我在骨相案那个帖子的评论区好像也见过类似意思的表述，感觉这些死者临终前都有一种共同的、以为自己已经清账却发现算错了的错愕，这种细节重复出现，真不像是巧合能解释的。</p>
+      </div>
+    </div>
+        
     </main>
     <aside>
       <div class="module">
         <div class="module-head">本站信息</div>
         <div class="module-body">
-          <p>建站：2003年 · 现有会员 <b>48291</b> 人</p>
+          <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
           <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
@@ -98,8 +125,44 @@
       <span class="badge">建议使用 IE5.5 以上浏览器</span>
       <span class="badge">禁止未成年人浏览真实案件版</span>
     </div>
-    <div>© 2003-2024 Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
+    <div>© 2020-<span class="footer-year">2026</span> Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
   </footer>
 </div>
+<script>
+(function(){
+  var LAUNCH = new Date(2020,0,1).getTime();
+  var now = new Date();
+  var daysSince = Math.max(0, Math.floor((now.getTime()-LAUNCH)/86400000));
+  var hour = now.getHours();
+
+  function seedRand(seed){
+    var x = Math.sin(seed)*10000;
+    return x - Math.floor(x);
+  }
+  var hourSeed = Math.floor(now.getTime()/3600000);
+
+  var totalVisits = 1000000 + Math.floor(daysSince*143.7) + Math.floor(seedRand(hourSeed)*80);
+  var diurnal = 260 + 210*Math.sin(((hour-15)/24)*2*Math.PI);
+  var online = Math.max(38, Math.floor(diurnal + (seedRand(hourSeed*7+1)-0.5)*70));
+
+  function setOdometer(el, value, digits){
+    var s = String(value).padStart(digits,'0').slice(-digits);
+    var spans = el.querySelectorAll('span');
+    spans.forEach(function(sp,i){ sp.textContent = s[i] || '0'; });
+  }
+  var odos = document.querySelectorAll('.odometer');
+  if(odos[0]) setOdometer(odos[0], online, odos[0].querySelectorAll('span').length);
+  if(odos[1]) setOdometer(odos[1], totalVisits, odos[1].querySelectorAll('span').length);
+
+  document.querySelectorAll('.footer-year').forEach(function(el){ el.textContent = now.getFullYear(); });
+
+  if(hour>=0 && hour<5){
+    var mq = document.querySelector('.marquee-bar');
+    if(mq){
+      mq.innerHTML += '\u3000\uff5c\u3000\u5982\u679c\u4f60\u6b63\u5728\u6df1\u591c\u5237\u5230\u8fd9\u6761\uff0c\u4e0d\u5fc5\u56de\u590d\uff0c\u4e5f\u4e0d\u5fc5\u5bb3\u6015\uff0c\u8fd9\u53ea\u662f\u5de7\u5408\u3002';
+    }
+  }
+})();
+</script>
 </body>
 </html>

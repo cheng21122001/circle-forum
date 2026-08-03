@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <span>Circle BBS · bbs.circle-talk.net · 建站于2003年</span>
+  <span>Circle BBS · bbs.circle-talk.net · 建站于2020年</span>
   <span class="dots"><span></span><span></span><span></span></span>
 </div>
 <div class="page">
@@ -41,7 +41,7 @@
     <div class="post-card op">
       <div class="post-head">
         <span><span class="floor-badge">1楼 · 楼主</span><span class="post-author">三十年后想起来还是发抖</span></span>
-        <span>2016-10-29 01:47</span>
+        <span>2021-10-29 01:47</span>
       </div>
       <div class="post-body">
         <p>那年万圣节的空气里混着邻居家壁炉未熄的余烬味，我们几个孩子手拉着手站在后院枯草与水泥交界的地方，他就站在我和简之间，浑身漆黑，两只耳朵尖利地指向天空。我记得他的手比我父亲的手更温暖，修长五指包裹住我的掌心，像一截特意晾晒许久的木头，干燥、可靠、坚硬。</p>
@@ -74,12 +74,46 @@
       </div>
     </div>
         
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">68楼</span>回复：</span>
+      </div>
+      <div class="post-body">
+        <p>我小时候被牵过手，牵手那年我爸升职，我一直以为是巧合，直到我表姐十年后也在她那条街被同样的东西牵了手，第二年她男朋友出了车祸，两件事叠在一起看，我才开始觉得这压根不是什么"许愿式"的好运，倒像是一种此消彼长的置换，牵手的孩子这边好起来了，就一定有什么东西在别处、以别人看不见的方式，一并被拿走了。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">73楼</span>回复68楼：</span>
+      </div>
+      <div class="post-body">
+        <p>你这个说法我信，我们这边老人管这个叫"讨口彩的",意思是它嘴上讨的是口彩,手里换的却是别的东西,小孩子不懂,只当是免费的糖,大人反倒都躲着不敢让自己孩子单独在外面站太久。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">81楼</span>回复：</span>
+      </div>
+      <div class="post-body">
+        <p>说个细思极恐的，我查了一下几个楼上提到的城市，"借手的人""讨口彩的""南瓜先生"这几个名字出现的年份居然能大致连成一条线，像是同一个东西在不同年代、不同地方换着马甲巡回，如果真是这样，它换名字的频率可比我们想象的要勤快得多。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-body">
+        <p class="editnote">——楼主追加（一周后）——</p>
+<p>私信收到好几条，都在说小时候被牵过手，我把能对上时间线的整理了一份表格发在了考据版，感兴趣的朋友可以去那边看看，越整理越觉得这事没那么简单，希望有懂行的前辈能指点一二，别让这条线就这么断在我们这几个普通网友手里。</p>
+      </div>
+    </div>
+        
     </main>
     <aside>
       <div class="module">
         <div class="module-head">本站信息</div>
         <div class="module-body">
-          <p>建站：2003年 · 现有会员 <b>48291</b> 人</p>
+          <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
           <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
@@ -112,8 +146,44 @@
       <span class="badge">建议使用 IE5.5 以上浏览器</span>
       <span class="badge">禁止未成年人浏览真实案件版</span>
     </div>
-    <div>© 2003-2024 Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
+    <div>© 2020-<span class="footer-year">2026</span> Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
   </footer>
 </div>
+<script>
+(function(){
+  var LAUNCH = new Date(2020,0,1).getTime();
+  var now = new Date();
+  var daysSince = Math.max(0, Math.floor((now.getTime()-LAUNCH)/86400000));
+  var hour = now.getHours();
+
+  function seedRand(seed){
+    var x = Math.sin(seed)*10000;
+    return x - Math.floor(x);
+  }
+  var hourSeed = Math.floor(now.getTime()/3600000);
+
+  var totalVisits = 1000000 + Math.floor(daysSince*143.7) + Math.floor(seedRand(hourSeed)*80);
+  var diurnal = 260 + 210*Math.sin(((hour-15)/24)*2*Math.PI);
+  var online = Math.max(38, Math.floor(diurnal + (seedRand(hourSeed*7+1)-0.5)*70));
+
+  function setOdometer(el, value, digits){
+    var s = String(value).padStart(digits,'0').slice(-digits);
+    var spans = el.querySelectorAll('span');
+    spans.forEach(function(sp,i){ sp.textContent = s[i] || '0'; });
+  }
+  var odos = document.querySelectorAll('.odometer');
+  if(odos[0]) setOdometer(odos[0], online, odos[0].querySelectorAll('span').length);
+  if(odos[1]) setOdometer(odos[1], totalVisits, odos[1].querySelectorAll('span').length);
+
+  document.querySelectorAll('.footer-year').forEach(function(el){ el.textContent = now.getFullYear(); });
+
+  if(hour>=0 && hour<5){
+    var mq = document.querySelector('.marquee-bar');
+    if(mq){
+      mq.innerHTML += '\u3000\uff5c\u3000\u5982\u679c\u4f60\u6b63\u5728\u6df1\u591c\u5237\u5230\u8fd9\u6761\uff0c\u4e0d\u5fc5\u56de\u590d\uff0c\u4e5f\u4e0d\u5fc5\u5bb3\u6015\uff0c\u8fd9\u53ea\u662f\u5de7\u5408\u3002';
+    }
+  }
+})();
+</script>
 </body>
 </html>

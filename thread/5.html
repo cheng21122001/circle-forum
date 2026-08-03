@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <span>Circle BBS · bbs.circle-talk.net · 建站于2003年</span>
+  <span>Circle BBS · bbs.circle-talk.net · 建站于2020年</span>
   <span class="dots"><span></span><span></span><span></span></span>
 </div>
 <div class="page">
@@ -41,7 +41,7 @@
     <div class="post-card op">
       <div class="post-head">
         <span><span class="floor-badge">1楼 · 楼主</span><span class="post-author">转发不代表认同</span></span>
-        <span>2022-08-30 04:11</span>
+        <span>2023-10-30 04:11</span>
       </div>
       <div class="post-body">
         <p>先声明我只是转发，笔记本是朋友的朋友托关系从旧货市场淘来的，说是里面夹着一张失踪人口协寻单才留了意，具体案子对不上号，希望懂行的朋友帮忙看看这文风、这内容，像不像是真的出自某个案子的当事人之手。</p>
@@ -57,12 +57,37 @@
     </div>
     
       
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">7楼</span>回复 转发不代表认同：</span>
+      </div>
+      <div class="post-body">
+        <p>"引路人"这个称呼我总觉得眼熟，好像在别的帖子底下也见过类似的说法，具体哪个帖子一时想不起来了，等我翻到再来更新，但光是这个称呼本身就透着一股子怪异的秩序感，好像背后确实存在一整套有职称、有流程的体系，而不是随便哪个疯子闭门造车写出来的呓语。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">15楼</span>回复7楼：</span>
+      </div>
+      <div class="post-body">
+        <p>工整到"没有一处涂改"这点确实反常，正常人写日记哪怕再克制，情绪激动的时候手也会抖、字也会乱，除非这份笔记本身就不是写给自己看的，而是誊写给别人、甚至是为了应付某种"检查"而定稿的，这样一想，那位"引路人"要签字确认的，恐怕不是笔记本身，是笔记里那种"驯服"的程度。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-body">
+        <p class="editnote">——楼主追加（十天后）——</p>
+<p>朋友的朋友后来又想起来一件事，说这笔记本原本是从一栋已经空置很久的老房子清理出来的杂物里翻出来的，具体是哪栋房子他不肯细说，只反复强调"那房子后来拆了，拆之前空了很多年，谁都不敢租"，听完我整个人都不太舒服，感觉这本笔记本背后的故事，恐怕比笔记本身写的还要长。</p>
+      </div>
+    </div>
+        
     </main>
     <aside>
       <div class="module">
         <div class="module-head">本站信息</div>
         <div class="module-body">
-          <p>建站：2003年 · 现有会员 <b>48291</b> 人</p>
+          <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
           <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
@@ -99,8 +124,44 @@
       <span class="badge">建议使用 IE5.5 以上浏览器</span>
       <span class="badge">禁止未成年人浏览真实案件版</span>
     </div>
-    <div>© 2003-2024 Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
+    <div>© 2020-<span class="footer-year">2026</span> Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
   </footer>
 </div>
+<script>
+(function(){
+  var LAUNCH = new Date(2020,0,1).getTime();
+  var now = new Date();
+  var daysSince = Math.max(0, Math.floor((now.getTime()-LAUNCH)/86400000));
+  var hour = now.getHours();
+
+  function seedRand(seed){
+    var x = Math.sin(seed)*10000;
+    return x - Math.floor(x);
+  }
+  var hourSeed = Math.floor(now.getTime()/3600000);
+
+  var totalVisits = 1000000 + Math.floor(daysSince*143.7) + Math.floor(seedRand(hourSeed)*80);
+  var diurnal = 260 + 210*Math.sin(((hour-15)/24)*2*Math.PI);
+  var online = Math.max(38, Math.floor(diurnal + (seedRand(hourSeed*7+1)-0.5)*70));
+
+  function setOdometer(el, value, digits){
+    var s = String(value).padStart(digits,'0').slice(-digits);
+    var spans = el.querySelectorAll('span');
+    spans.forEach(function(sp,i){ sp.textContent = s[i] || '0'; });
+  }
+  var odos = document.querySelectorAll('.odometer');
+  if(odos[0]) setOdometer(odos[0], online, odos[0].querySelectorAll('span').length);
+  if(odos[1]) setOdometer(odos[1], totalVisits, odos[1].querySelectorAll('span').length);
+
+  document.querySelectorAll('.footer-year').forEach(function(el){ el.textContent = now.getFullYear(); });
+
+  if(hour>=0 && hour<5){
+    var mq = document.querySelector('.marquee-bar');
+    if(mq){
+      mq.innerHTML += '\u3000\uff5c\u3000\u5982\u679c\u4f60\u6b63\u5728\u6df1\u591c\u5237\u5230\u8fd9\u6761\uff0c\u4e0d\u5fc5\u56de\u590d\uff0c\u4e5f\u4e0d\u5fc5\u5bb3\u6015\uff0c\u8fd9\u53ea\u662f\u5de7\u5408\u3002';
+    }
+  }
+})();
+</script>
 </body>
 </html>

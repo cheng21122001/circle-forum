@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <span>Circle BBS · bbs.circle-talk.net · 建站于2003年</span>
+  <span>Circle BBS · bbs.circle-talk.net · 建站于2020年</span>
   <span class="dots"><span></span><span></span><span></span></span>
 </div>
 <div class="page">
@@ -41,7 +41,7 @@
     <div class="post-card op">
       <div class="post-head">
         <span><span class="floor-badge">1楼 · 楼主</span><span class="post-author">坐在角落没怎么说话的那个</span></span>
-        <span>2021-10-08 23:15</span>
+        <span>2023-08-08 23:15</span>
       </div>
       <div class="post-body">
         <p>聚会订在市中心一家装潢很新的餐厅，十几年没见的面孔一张张变得陌生又熟悉，酒过三巡，不知道是谁先提起了陈昊的名字，饭桌上的声音忽然低了下去，那种低下去的方式很微妙，不是尴尬，更像是一群人同时想起了一件谁都没想通、却又都下意识不愿深想的事。</p>
@@ -56,12 +56,39 @@
     </div>
     
       
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">3楼</span>回复 坐在角落没怎么说话的那个：</span>
+      </div>
+      <div class="post-body">
+        <p>看完这个帖子浑身发冷，我们高中也有个类似的同学，前几年突然开始在朋友圈发那种"我终于被真正理解了"的长文，后来彻底失联，我一直以为只是他自己想开了换了个活法，现在想想，那种"标准化的温柔"背后，恐怕根本不是他自己选的活法。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">9楼</span>回复：</span>
+      </div>
+      <div class="post-body">
+        <p>"抱歉认错人了吧"这句话细想真的很恐怖，比起完全不认识，更让人毛骨悚然的是那种"曾经认识、如今被训练成对谁都一样客气"的疏离，感觉那个人身上属于"陈昊"的部分，可能真的已经被磨得差不多了。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">15楼</span>回复9楼：</span>
+      </div>
+      <div class="post-body">
+        <p>如果他还活着、还在替某个东西"看见"下一个人，那至少说明这具身体还没被"结账"，也许还有一点点机会，只是不知道要靠谁、用什么办法，才能把他从那套流程里拽出来。</p>
+      </div>
+    </div>
+        
     </main>
     <aside>
       <div class="module">
         <div class="module-head">本站信息</div>
         <div class="module-body">
-          <p>建站：2003年 · 现有会员 <b>48291</b> 人</p>
+          <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
           <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
@@ -98,8 +125,44 @@
       <span class="badge">建议使用 IE5.5 以上浏览器</span>
       <span class="badge">禁止未成年人浏览真实案件版</span>
     </div>
-    <div>© 2003-2024 Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
+    <div>© 2020-<span class="footer-year">2026</span> Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
   </footer>
 </div>
+<script>
+(function(){
+  var LAUNCH = new Date(2020,0,1).getTime();
+  var now = new Date();
+  var daysSince = Math.max(0, Math.floor((now.getTime()-LAUNCH)/86400000));
+  var hour = now.getHours();
+
+  function seedRand(seed){
+    var x = Math.sin(seed)*10000;
+    return x - Math.floor(x);
+  }
+  var hourSeed = Math.floor(now.getTime()/3600000);
+
+  var totalVisits = 1000000 + Math.floor(daysSince*143.7) + Math.floor(seedRand(hourSeed)*80);
+  var diurnal = 260 + 210*Math.sin(((hour-15)/24)*2*Math.PI);
+  var online = Math.max(38, Math.floor(diurnal + (seedRand(hourSeed*7+1)-0.5)*70));
+
+  function setOdometer(el, value, digits){
+    var s = String(value).padStart(digits,'0').slice(-digits);
+    var spans = el.querySelectorAll('span');
+    spans.forEach(function(sp,i){ sp.textContent = s[i] || '0'; });
+  }
+  var odos = document.querySelectorAll('.odometer');
+  if(odos[0]) setOdometer(odos[0], online, odos[0].querySelectorAll('span').length);
+  if(odos[1]) setOdometer(odos[1], totalVisits, odos[1].querySelectorAll('span').length);
+
+  document.querySelectorAll('.footer-year').forEach(function(el){ el.textContent = now.getFullYear(); });
+
+  if(hour>=0 && hour<5){
+    var mq = document.querySelector('.marquee-bar');
+    if(mq){
+      mq.innerHTML += '\u3000\uff5c\u3000\u5982\u679c\u4f60\u6b63\u5728\u6df1\u591c\u5237\u5230\u8fd9\u6761\uff0c\u4e0d\u5fc5\u56de\u590d\uff0c\u4e5f\u4e0d\u5fc5\u5bb3\u6015\uff0c\u8fd9\u53ea\u662f\u5de7\u5408\u3002';
+    }
+  }
+})();
+</script>
 </body>
 </html>

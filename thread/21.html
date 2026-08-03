@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <span>Circle BBS · bbs.circle-talk.net · 建站于2003年</span>
+  <span>Circle BBS · bbs.circle-talk.net · 建站于2020年</span>
   <span class="dots"><span></span><span></span><span></span></span>
 </div>
 <div class="page">
@@ -41,7 +41,7 @@
     <div class="post-card op">
       <div class="post-head">
         <span><span class="floor-badge">1楼 · 楼主</span><span class="post-author">非虚构写作练习中</span></span>
-        <span>2023-05-30 20:18</span>
+        <span>2024-05-30 20:18</span>
       </div>
       <div class="post-body">
         <p>因为一直在关注骨相案和"原"相关的几个帖子，托朋友辗转联系上了一位据说二十多年前就从"回声之家"退出、至今健在的老人，对方年过七十，谈话思路依然清晰，同意匿名接受一次简短的访谈，以下是整理后的内容。</p>
@@ -61,12 +61,39 @@
     </div>
     
       
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">12楼</span>回复 非虚构写作练习中：</span>
+      </div>
+      <div class="post-body">
+        <p>这份访谈读完心情很复杂，比起单纯的"骗过邪教"的爽文桥段，这位老人后半生活在良心债里的样子，反而更让我觉得毛骨悚然——原来就算真的躲过了那份账，也不代表真的能全身而退，只是换了一种更漫长、更隐蔽的方式在偿还。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">20楼</span>回复12楼：</span>
+      </div>
+      <div class="post-body">
+        <p>"它只认账目是否完整，不认内容是否真实"这句话如果是真的，那这套体系背后的那个东西，恐怕根本不具备我们通常理解的"神明"或者"报应"该有的辨别能力，它更像是一套死板到近乎机械的记账程序，谁经手、谁负责，它只按流程认账，完全不讲情面也不讲对错。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">27楼</span>回复：</span>
+      </div>
+      <div class="post-body">
+        <p>细思极恐的是，如果这个漏洞真的存在，而且真的被后来的人知道了，会不会有人故意利用它，专门找一个"替罪的引路人"来顶账，那样一来，受害的可就不只是当年那位老人心里过意不去的引路人这么简单了。</p>
+      </div>
+    </div>
+        
     </main>
     <aside>
       <div class="module">
         <div class="module-head">本站信息</div>
         <div class="module-body">
-          <p>建站：2003年 · 现有会员 <b>48291</b> 人</p>
+          <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
           <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
@@ -103,8 +130,44 @@
       <span class="badge">建议使用 IE5.5 以上浏览器</span>
       <span class="badge">禁止未成年人浏览真实案件版</span>
     </div>
-    <div>© 2003-2024 Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
+    <div>© 2020-<span class="footer-year">2026</span> Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
   </footer>
 </div>
+<script>
+(function(){
+  var LAUNCH = new Date(2020,0,1).getTime();
+  var now = new Date();
+  var daysSince = Math.max(0, Math.floor((now.getTime()-LAUNCH)/86400000));
+  var hour = now.getHours();
+
+  function seedRand(seed){
+    var x = Math.sin(seed)*10000;
+    return x - Math.floor(x);
+  }
+  var hourSeed = Math.floor(now.getTime()/3600000);
+
+  var totalVisits = 1000000 + Math.floor(daysSince*143.7) + Math.floor(seedRand(hourSeed)*80);
+  var diurnal = 260 + 210*Math.sin(((hour-15)/24)*2*Math.PI);
+  var online = Math.max(38, Math.floor(diurnal + (seedRand(hourSeed*7+1)-0.5)*70));
+
+  function setOdometer(el, value, digits){
+    var s = String(value).padStart(digits,'0').slice(-digits);
+    var spans = el.querySelectorAll('span');
+    spans.forEach(function(sp,i){ sp.textContent = s[i] || '0'; });
+  }
+  var odos = document.querySelectorAll('.odometer');
+  if(odos[0]) setOdometer(odos[0], online, odos[0].querySelectorAll('span').length);
+  if(odos[1]) setOdometer(odos[1], totalVisits, odos[1].querySelectorAll('span').length);
+
+  document.querySelectorAll('.footer-year').forEach(function(el){ el.textContent = now.getFullYear(); });
+
+  if(hour>=0 && hour<5){
+    var mq = document.querySelector('.marquee-bar');
+    if(mq){
+      mq.innerHTML += '\u3000\uff5c\u3000\u5982\u679c\u4f60\u6b63\u5728\u6df1\u591c\u5237\u5230\u8fd9\u6761\uff0c\u4e0d\u5fc5\u56de\u590d\uff0c\u4e5f\u4e0d\u5fc5\u5bb3\u6015\uff0c\u8fd9\u53ea\u662f\u5de7\u5408\u3002';
+    }
+  }
+})();
+</script>
 </body>
 </html>

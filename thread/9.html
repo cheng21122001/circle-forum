@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <span>Circle BBS · bbs.circle-talk.net · 建站于2003年</span>
+  <span>Circle BBS · bbs.circle-talk.net · 建站于2020年</span>
   <span class="dots"><span></span><span></span><span></span></span>
 </div>
 <div class="page">
@@ -41,7 +41,7 @@
     <div class="post-card op">
       <div class="post-head">
         <span><span class="floor-badge">1楼 · 楼主</span><span class="post-author">HR新人求安慰</span></span>
-        <span>2020-09-02 22:40</span>
+        <span>2023-01-02 22:40</span>
       </div>
       <div class="post-body">
         <p>三个月前我拿到这份offer的时候，几乎是喜极而泣地告诉了所有朋友，一家做"心理成长"内容的公司，薪水不算顶尖但足够体面，面试我的那位总监握着我的手说了很久，说她在我身上看到了一种"很少见的、愿意为他人真正停留的能力"，那种被人如此郑重其事地看见的感觉，让我在签合同的那一刻几乎忘了问清楚具体的岗位职责，只记得自己一路带着一种被选中的雀跃走出写字楼，路上打给妈妈报喜时，声音都是抖的。</p>
@@ -56,12 +56,46 @@
     </div>
     
       
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">4楼</span>回复 HR新人求安慰：</span>
+      </div>
+      <div class="post-body">
+        <p>"信任深度"这个字段我也见过，我之前在一家类似的机构做过半年市场，系统里那栏后面还会跟着一个百分比，越高代表这个学员对机构"依赖"得越彻底，招生大会上领导直接拿这个百分比排名表彰优秀员工，当时大家都觉得挺正常，现在想想真的挺变态的。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">10楼</span>回复4楼：</span>
+      </div>
+      <div class="post-body">
+        <p>楼主赶紧收拾东西离职吧，不管这背后是不是什么邪乎的东西，光凭"故意挑选情绪脆弱的人下手，再引导他们交出隐私"这一套流程，本身就已经是能立案的那种诱导性质了，别为了一份工作把自己也搭进去。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-head">
+        <span><span class="floor-badge">16楼</span>回复：</span>
+      </div>
+      <div class="post-body">
+        <p>你们说的"过账登记"我一个朋友的朋友也提过，说她们公司内部私下管这套流程叫"上账"，还说做得好的员工，会被破格提拔成"引路人"，听着挺光鲜，其实就是升级去干更核心的那部分工作，具体核心到什么程度，她也没细说，只说升上去以后整个人的状态都会变得特别"平"，情绪起伏小得不像话。</p>
+      </div>
+    </div>
+        
+    <div class="post-card">
+      <div class="post-body">
+        <p class="editnote">——楼主追加（两周后）——</p>
+<p>我还是没敢辞职，只是开始悄悄把每一次"深度分享"的具体内容和参与者备份到自己的私人邮箱，想着万一以后真出了什么事，至少手里能有点东西，昨天整理台账时又看到一个新流失的名字，这次我没敢再去联系家属，只是把名字也一起存进了那份备份里。</p>
+      </div>
+    </div>
+        
     </main>
     <aside>
       <div class="module">
         <div class="module-head">本站信息</div>
         <div class="module-body">
-          <p>建站：2003年 · 现有会员 <b>48291</b> 人</p>
+          <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
           <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
@@ -94,8 +128,44 @@
       <span class="badge">建议使用 IE5.5 以上浏览器</span>
       <span class="badge">禁止未成年人浏览真实案件版</span>
     </div>
-    <div>© 2003-2024 Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
+    <div>© 2020-<span class="footer-year">2026</span> Circle 版权所有 · 本站为民间自建交流社区，与任何现实机构无关</div>
   </footer>
 </div>
+<script>
+(function(){
+  var LAUNCH = new Date(2020,0,1).getTime();
+  var now = new Date();
+  var daysSince = Math.max(0, Math.floor((now.getTime()-LAUNCH)/86400000));
+  var hour = now.getHours();
+
+  function seedRand(seed){
+    var x = Math.sin(seed)*10000;
+    return x - Math.floor(x);
+  }
+  var hourSeed = Math.floor(now.getTime()/3600000);
+
+  var totalVisits = 1000000 + Math.floor(daysSince*143.7) + Math.floor(seedRand(hourSeed)*80);
+  var diurnal = 260 + 210*Math.sin(((hour-15)/24)*2*Math.PI);
+  var online = Math.max(38, Math.floor(diurnal + (seedRand(hourSeed*7+1)-0.5)*70));
+
+  function setOdometer(el, value, digits){
+    var s = String(value).padStart(digits,'0').slice(-digits);
+    var spans = el.querySelectorAll('span');
+    spans.forEach(function(sp,i){ sp.textContent = s[i] || '0'; });
+  }
+  var odos = document.querySelectorAll('.odometer');
+  if(odos[0]) setOdometer(odos[0], online, odos[0].querySelectorAll('span').length);
+  if(odos[1]) setOdometer(odos[1], totalVisits, odos[1].querySelectorAll('span').length);
+
+  document.querySelectorAll('.footer-year').forEach(function(el){ el.textContent = now.getFullYear(); });
+
+  if(hour>=0 && hour<5){
+    var mq = document.querySelector('.marquee-bar');
+    if(mq){
+      mq.innerHTML += '\u3000\uff5c\u3000\u5982\u679c\u4f60\u6b63\u5728\u6df1\u591c\u5237\u5230\u8fd9\u6761\uff0c\u4e0d\u5fc5\u56de\u590d\uff0c\u4e5f\u4e0d\u5fc5\u5bb3\u6015\uff0c\u8fd9\u53ea\u662f\u5de7\u5408\u3002';
+    }
+  }
+})();
+</script>
 </body>
 </html>
