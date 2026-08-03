@@ -19,9 +19,8 @@
   .page{ max-width:960px; margin:0 auto 30px; background:var(--page-bg); border:1px solid var(--line-dark); border-top:none; }
   header.site{ padding:16px 20px 10px; text-align:center; background:var(--page-bg); border-bottom:1px solid var(--line); }
   header.site h1{ margin:0; }
-  header.site h1 a{ font-family:"Times New Roman","STSong",serif; font-weight:bold; font-style:italic; font-size:38px;
+  header.site h1 a{ font-weight:bold; font-size:38px;
     letter-spacing:4px; color:var(--red); text-decoration:none; }
-  header.site .tagline{ margin:4px 0 0; font-size:11px; color:var(--ink-soft); font-style:italic; }
   nav.mainnav{ background:var(--table-head-bg); font-weight:bold; font-size:11px; padding:6px 14px;
     display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid var(--line-dark); }
   nav.mainnav a{ color:var(--link); text-decoration:none; }
