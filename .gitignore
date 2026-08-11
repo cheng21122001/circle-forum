@@ -1,2 +1,5 @@
 .DS_Store
 **/.DS_Store
+
+# Obsidian 在 _src 里生成的配置，不入库
+_src/.obsidian/
