@@ -5,6 +5,7 @@
 - site/index.html            首页（板块列表 + 最新回复）
 - site/board/<key>.html      板块页
 - site/thread/<NN>.html      帖子详情页
+帖子正文里单独一行写 [图:文件名]，会插入 site/img/ 下的图片。
 纯 stdlib，无依赖，重复运行会整体覆盖生成结果。
 """
 import os, re, glob, html
@@ -124,6 +125,7 @@ CSS = """
   .post-author{ font-weight:bold; color:var(--link-visited); }
   .post-body p{ margin:0 0 12px; }
   .post-body p:last-child{ margin-bottom:0; }
+  .post-body p.pic img{ display:block; max-width:min(100%,420px); height:auto; border:1px solid var(--line-dark); }
   .post-body p.editnote{ color:var(--red); font-style:italic; font-size:11.5px; border-top:1px dashed var(--line); padding-top:8px; }
   .post-body p.sysnote{ color:var(--ink-soft); font-size:11px; background:#f3f3ee; border:1px dashed var(--line); padding:6px 8px; }
   .thread-title-h1{ font-size:17px; margin:0; padding:12px 16px; border-bottom:1px solid var(--line-dark); background:#fafafa; }
@@ -168,7 +170,7 @@ def render_shell(active_key, breadcrumb_html, body_html, depth=0):
     {nav_html}
   </nav>
   <div class="marquee-bar">
-    <b>系统公告：</b>【全站置顶】"最后的记账人"一帖因编辑异常已开启保护模式，禁止删改回复，账号"灯还亮着"至今未再登录　｜　版规更新：请勿在树洞版打听他人真实身份　｜　服务器将于本周日凌晨例行维护
+    <b>系统公告：</b>版规更新：请勿在树洞版打听他人真实身份　｜　服务器将于本周日凌晨例行维护
   </div>
   {breadcrumb_html}
   {body_html}
@@ -229,7 +231,6 @@ def render_aside():
           <p>建站：2020年 · 现有会员 <b>48291</b> 人</p>
           <p>版规第一条：怪谈可以夸张，案件不许编造。</p>
           <p>版规第三条：不要在评论区追问楼主的真实身份。</p>
-          <p style="color:var(--red)">版规第七条（新增）：请勿删改任何被吧务标记保护的帖子。</p>
         </div>
       </div>
       <div class="module">
@@ -247,7 +248,7 @@ def render_aside():
         <div class="module-body">
           <div class="odometer"><span>1</span><span>0</span><span>0</span><span>7</span><span>1</span><span>0</span><span>7</span></div>
           <div class="odometer-label" style="text-align:center">建站以来累计访问</div>
-          <p class="disclaimer">本站所有会员发言仅代表个人观点，如涉及真实案件请以警方通报为准。本站不对任何"课程""组织""疗愈机构"的邀请链接负责，请自行甄别。</p>
+          <p class="disclaimer">本站所有会员发言仅代表个人观点，如涉及真实案件请以警方通报为准。</p>
         </div>
       </div>
     </aside>"""
@@ -255,6 +256,7 @@ def render_aside():
 # ---------- 解析 threads/*.md ----------
 FLOOR_RE = re.compile(r"^(\d+)楼\s*(.*)$")
 TITLE_RE = re.compile(r"^【(.*?)】(.*)$")
+IMG_RE = re.compile(r"^\[图[:：](.+)\]$")
 
 def parse_thread(path, tid):
     with open(path, encoding="utf-8") as f:
@@ -332,6 +334,10 @@ def render_post_body(paras):
     for p in paras:
         p = p.strip()
         if not p:
+            continue
+        im = IMG_RE.match(p)
+        if im:
+            out.append(f'<p class="pic"><img src="../img/{esc(im.group(1).strip())}" alt=""></p>')
             continue
         cls = para_class(p)
         cls_attr = f' class="{cls}"' if cls else ""
@@ -433,11 +439,8 @@ def render_index(all_threads):
             <td class="num">{info['topics']}</td><td class="num">{info['posts']}</td>
             <td class="latest-in-board">{latest_html}</td></tr>"""
 
-    pinned = next(t for t in all_threads if t["id"] == 16)
-    recent = sorted([t for t in all_threads if t["id"] != 16], key=lambda x: -x["id"])[:9]
-    thread_items = f"""<li class="pinned"><span class="tag pin">置顶</span>
-        <span class="thread-title"><a href="thread/16.html" class="pinned-link">{esc(pinned['title'])}</a></span>
-        <span class="thread-meta">{esc(pinned['author'])} · {len(pinned['replies'])}回复</span></li>"""
+    recent = sorted(all_threads, key=lambda x: -x["id"])[:10]
+    thread_items = ""
     for t in recent:
         info = BOARD_INFO[t["board"]]
         thread_items += f"""<li><span class="tag board">{info['tag']}</span>
@@ -465,7 +468,8 @@ def render_index(all_threads):
     return render_shell("home", "", body_html, depth=0)
 
 def main():
-    paths = sorted(glob.glob(os.path.join(THREADS_DIR, "*.md")))
+    paths = sorted(p for p in glob.glob(os.path.join(THREADS_DIR, "*.md"))
+                   if re.match(r"^\d+-", os.path.basename(p)))
     all_threads = []
     for p in paths:
         base = os.path.basename(p)

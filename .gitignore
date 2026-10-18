@@ -3,3 +3,4 @@
 
 # Obsidian 在 _src 里生成的配置，不入库
 _src/.obsidian/
+__pycache__/
