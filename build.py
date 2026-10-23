@@ -17,10 +17,13 @@
     N楼 楼主 @ ...                 楼主自己的回应
     N楼 回复 M楼 @ ...             引用第 M 楼
     N楼 楼主 回复 M楼 @ ...
+    N楼 [甲] 回复 M楼 @ ...        方括号是记号，同一篇里记号相同 = 同一个人
+  每人在帖内有固定短 ID（帖子编号＋记号算出，页面不显示记号）；
+  没写记号的楼层各算一个路人，楼主统一一个 ID。
   单独一行 [图:文件名]           插入 site/img/ 下的图片
   以【 开头的段落                 灰色提示，比如【该条回应已被删除】
 
-所有人都显示为「匿名用户」。只编译文件名以「数字-」开头的 md。
+所有人都显示为「匿名用户 + 帖内 ID」。只编译文件名以「数字-」开头的 md。
 """
 import os, re, glob, html, shutil, hashlib
 
@@ -29,7 +32,7 @@ THREADS_DIR = os.path.join(ROOT, "_src", "threads")
 OUT_THREAD_DIR = os.path.join(ROOT, "thread")
 ANON = "匿名用户"
 
-FLOOR_RE = re.compile(r"^(\d+)楼\s*(楼主)?\s*(?:回复\s*(\d+)楼)?\s*[:：]?\s*(?:@\s*(.+?))?\s*$")
+FLOOR_RE = re.compile(r"^(\d+)楼\s*(楼主)?\s*(?:\[(.+?)\])?\s*(?:回复\s*(\d+)楼)?\s*[:：]?\s*(?:@\s*(.+?))?\s*$")
 IMG_RE = re.compile(r"^\[图[:：](.+)\]$")
 
 def esc(s):
@@ -42,6 +45,17 @@ def with_seconds(stamp, salt):
         return stamp
     sec = int(hashlib.md5((stamp + salt).encode()).hexdigest(), 16) % 60
     return f"{stamp}:{sec:02d}"
+
+UID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789"
+
+def uid(tid, key):
+    """帖内固定短 ID：同一帖同一记号永远得到同一串。"""
+    n = int(hashlib.md5(f"{tid}:{key}".encode()).hexdigest(), 16)
+    out = ""
+    for _ in range(6):
+        n, i = divmod(n, len(UID_CHARS))
+        out += UID_CHARS[i]
+    return out
 
 # ---------- 解析 ----------
 def parse_thread(path, tid):
@@ -59,7 +73,8 @@ def parse_thread(path, tid):
         if fm:
             replies.append({
                 "floor": fm.group(1), "is_op": bool(fm.group(2)),
-                "reply_to": fm.group(3), "time": with_seconds(fm.group(4) or "", fm.group(1)),
+                "uid": uid(tid, "楼主" if fm.group(2) else (fm.group(3) or "floor" + fm.group(1))),
+                "reply_to": fm.group(4), "time": with_seconds(fm.group(5) or "", fm.group(1)),
                 "paras": block_lines[1:],
             })
         elif replies:
@@ -93,9 +108,9 @@ def quote_text(r):
         text = "[图片]"
     return text if len(text) <= 60 else text[:60] + "…"
 
-def name_html(is_op):
+def name_html(is_op, u):
     badge = '<span class="op-badge">楼主</span>' if is_op else ""
-    return f'<span class="who"><span class="uname">{ANON}</span>{badge}</span>'
+    return f'<span class="who"><span class="uname">{ANON}</span><span class="uid">{u}</span>{badge}</span>'
 
 def render_shell(title, body, depth):
     prefix = "../" * depth
@@ -124,11 +139,11 @@ def render_thread_page(t):
         target = by_floor.get(r["reply_to"]) if r["reply_to"] else None
         if target:
             quote = (f'<div class="quote"><span class="q-text">{esc(quote_text(target))}</span>'
-                     f'<span class="q-by">{ANON}</span></div>')
+                     f'<span class="q-by">{ANON}<span class="uid">{target["uid"]}</span></span></div>')
         items.append(f"""<li class="reply">
   <div class="avatar"></div>
   <div class="reply-main">
-    <div class="reply-head">{name_html(r['is_op'])}<span class="time">{esc(r['time'])}</span></div>
+    <div class="reply-head">{name_html(r['is_op'], r['uid'])}<span class="time">{esc(r['time'])}</span></div>
     {quote}
     <div class="reply-content">{render_paras(r['paras'])}</div>
   </div>
@@ -137,7 +152,7 @@ def render_thread_page(t):
   <h1>{esc(t['title'])}</h1>
   <div class="topic-head">
     <div class="avatar"></div>
-    <div class="topic-meta">{name_html(True)}<span class="time">{esc(t['date'])}</span></div>
+    <div class="topic-meta">{name_html(True, uid(t['id'], "楼主"))}<span class="time">{esc(t['date'])}</span></div>
   </div>
   <div class="topic-content">{render_paras(t['body'])}</div>
   <div class="replies-head">{len(t['replies'])} 条回应</div>
@@ -188,6 +203,7 @@ h1 { font-size: 22px; font-weight: bold; color: #494949; line-height: 1.4; margi
 .topic-head { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
 .topic-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
 .uname { color: #37a; }
+.uid { margin-left: 4px; color: #999; font-size: 12px; font-family: Menlo, Consolas, monospace; }
 .op-badge { display: inline-block; margin-left: 6px; padding: 0 4px; font-size: 11px; line-height: 16px;
   color: #9b9b9b; border: 1px solid #d8d8d8; border-radius: 2px; }
 .time { color: #aaa; font-size: 12px; }
