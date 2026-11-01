@@ -46,6 +46,10 @@ def with_seconds(stamp, salt):
     sec = int(hashlib.md5((stamp + salt).encode()).hexdigest(), 16) % 60
     return f"{stamp}:{sec:02d}"
 
+def clock(stamp):
+    """网页上只显示钟点：2023-04-09 03:12:37 -> 03:12:37。稿子里照样写完整日期。"""
+    return stamp.split(" ")[-1] if " " in stamp else stamp
+
 UID_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789"
 
 def uid(tid, key):
@@ -143,7 +147,7 @@ def render_thread_page(t):
         items.append(f"""<li class="reply">
   <div class="avatar"></div>
   <div class="reply-main">
-    <div class="reply-head">{name_html(r['is_op'], r['uid'])}<span class="time">{esc(r['time'])}</span></div>
+    <div class="reply-head">{name_html(r['is_op'], r['uid'])}<span class="time">{esc(clock(r['time']))}</span></div>
     {quote}
     <div class="reply-content">{render_paras(r['paras'])}</div>
   </div>
@@ -152,7 +156,7 @@ def render_thread_page(t):
   <h1>{esc(t['title'])}</h1>
   <div class="topic-head">
     <div class="avatar"></div>
-    <div class="topic-meta">{name_html(True, uid(t['id'], "楼主"))}<span class="time">{esc(t['date'])}</span></div>
+    <div class="topic-meta">{name_html(True, uid(t['id'], "楼主"))}<span class="time">{esc(clock(t['date']))}</span></div>
   </div>
   <div class="topic-content">{render_paras(t['body'])}</div>
   <div class="replies-head">{len(t['replies'])} 条回应</div>
@@ -171,7 +175,7 @@ def render_index(threads):
   <td class="t-title"><a href="thread/{t['id']}.html">{esc(t['title'])}</a></td>
   <td class="t-author">{ANON}</td>
   <td class="t-count">{len(t['replies'])}</td>
-  <td class="t-time">{esc(last[5:16])}</td>
+  <td class="t-time">{esc(clock(last)[:5])}</td>
 </tr>"""
     body = f"""<div class="article">
   <table class="topics">
