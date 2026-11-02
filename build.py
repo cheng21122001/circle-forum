@@ -22,6 +22,7 @@
   没写记号的楼层各算一个路人，楼主统一一个 ID。
   单独一行 [图:文件名]           插入 site/img/ 下的图片
   以【 开头的段落                 灰色提示，比如【该条回应已被删除】
+  单独一行 ===以下未发布===        这行以下留在稿子里，不放到网页上（分批更新用）
 
 所有人都显示为「匿名用户 + 帖内 ID」。只编译文件名以「数字-」开头的 md。
 """
@@ -64,7 +65,10 @@ def uid(tid, key):
 # ---------- 解析 ----------
 def parse_thread(path, tid):
     with open(path, encoding="utf-8") as f:
-        lines = f.read().strip("\n").split("\n")
+        text = f.read()
+    # 单独一行「===以下未发布===」：这行以下的内容留在稿子里，不生成到网页上
+    text = re.split(r"(?m)^=+\s*以下未发布\s*=+\s*$", text)[0]
+    lines = text.strip("\n").split("\n")
     title = lines[0].strip()
     m = re.search(r"发表于\s*(.+)$", lines[1])
     date = m.group(1).strip() if m else lines[1].strip()
