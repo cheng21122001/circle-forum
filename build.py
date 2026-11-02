@@ -118,7 +118,7 @@ def quote_text(r):
 
 def name_html(is_op, u):
     badge = '<span class="op-badge">楼主</span>' if is_op else ""
-    return f'<span class="who"><span class="uname">{ANON}</span><span class="uid">{u}</span>{badge}</span>'
+    return f'<span class="who{" op" if is_op else ""}"><span class="uname">{ANON}</span><span class="uid">{u}</span>{badge}</span>'
 
 def render_shell(title, body, depth):
     prefix = "../" * depth
@@ -147,7 +147,7 @@ def render_thread_page(t):
         target = by_floor.get(r["reply_to"]) if r["reply_to"] else None
         if target:
             quote = (f'<div class="quote"><span class="q-text">{esc(quote_text(target))}</span>'
-                     f'<span class="q-by">{ANON}<span class="uid">{target["uid"]}</span></span></div>')
+                     f'<span class="q-by{" op" if target["is_op"] else ""}">{ANON}<span class="uid">{target["uid"]}</span></span></div>')
         items.append(f"""<li class="reply">
   <div class="avatar"></div>
   <div class="reply-main">
@@ -211,6 +211,8 @@ h1 { font-size: 22px; font-weight: bold; color: #494949; line-height: 1.4; margi
 .topic-head { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
 .topic-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
 .uname { color: #37a; }
+.who.op .uname, .q-by.op { color: #d9731a; }
+.who.op .op-badge { color: #d9731a; border-color: #f0c39a; }
 .uid { margin-left: 4px; color: #999; font-size: 12px; font-family: Menlo, Consolas, monospace; }
 .op-badge { display: inline-block; margin-left: 6px; padding: 0 4px; font-size: 11px; line-height: 16px;
   color: #9b9b9b; border: 1px solid #d8d8d8; border-radius: 2px; }
